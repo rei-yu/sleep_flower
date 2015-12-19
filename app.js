@@ -18,7 +18,7 @@ var eventEmitter = new events.EventEmitter();
 // };
 
 //Create a static file server
-app.use(function() {
+app.configure(function() {
   app.use(express.static(__dirname + '/public'));
 });
 app.set('view engine', 'ejs')
@@ -185,26 +185,26 @@ var post_message = function (req, res) {
 // }
 
 
-function receive_sensor_data (req, res) {
-    functions.log('3. receive_sensor_data')
-    var query_string = require('url').parse(req.url).query
-    var queries = Qs.parse(query_string)
-    eventEmitter.emit('respond_sensor_data', queries)
-    res.send(JSON.stringify({ok: true}))
-}
+// function receive_sensor_data (req, res) {
+//     functions.log('3. receive_sensor_data')
+//     var query_string = require('url').parse(req.url).query
+//     var queries = Qs.parse(query_string)
+//     eventEmitter.emit('respond_sensor_data', queries)
+//     res.send(JSON.stringify({ok: true}))
+// }
 
-var receive_request_to_sensor = function (req, res) {
-    functions.log('1. receive_request_to_sensor')
-    var query_string = require('url').parse(req.url).query
-    var queries = Qs.parse(query_string)
-    functions.log('2. push')
-    push(token, '', { data_type: 'location'})
-    eventEmitter.once('respond_sensor_data', function (queries) {
-        functions.log(queries.sensor_data)
-        functions.log('4. respond_sensor_data to requester')
-        res.send(JSON.stringify({ok: true, data_type: 'location', data: queries}))
-    });
-}
+// var receive_request_to_sensor = function (req, res) {
+//     functions.log('1. receive_request_to_sensor')
+//     var query_string = require('url').parse(req.url).query
+//     var queries = Qs.parse(query_string)
+//     functions.log('2. push')
+//     push(token, '', { data_type: 'location'})
+//     eventEmitter.once('respond_sensor_data', function (queries) {
+//         functions.log(queries.sensor_data)
+//         functions.log('4. respond_sensor_data to requester')
+//         res.send(JSON.stringify({ok: true, data_type: 'location', data: queries}))
+//     });
+// }
 
 app.get('/', function (req, res) {
     res.render('index', { direct: true } )
