@@ -18,7 +18,7 @@ var eventEmitter = new events.EventEmitter();
 // };
 
 //Create a static file server
-app.configure(function() {
+app.use(function() {
   app.use(express.static(__dirname + '/public'));
 });
 app.set('view engine', 'ejs')
