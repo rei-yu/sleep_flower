@@ -210,6 +210,5 @@ app.get('/', function (req, res) {
     res.render('index', { direct: true } )
 })
 
-var port = 8080;
-app.listen(port);
-functions.log('Express server started on port %s', port);
+app.listen(process.env.PORT || 8080);
+functions.log('Express server started';
