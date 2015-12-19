@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <title>HackMe</title>
+  <head>
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="/styles/materialize.min.css"  media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script type="text/javascript" src="/javascript/jquery-1.11.3.js"></script>
+
+    <script type="text/javascript" src="/javascript/materialize.min.js"></script>
+    <script src="/javascript/connect_websocket.js"></script>
+    <!-- <link rel='stylesheet' type='text/css' href='/components/font-awesome/css/font-awesome.min.css'> -->
+  </head>
+  <body>
+    <!-- Settings List Page -->
+    <div class="wrapper">
+      <script>
+        function getUrlParameter() {
+          var PageURL = decodeURIComponent(window.location.search.substring(1));
+          var URLVariables = PageURL.split('&');
+
+          var urlParam = URLVariables[0].split('=');
+          var name = urlParam[1];
+          // document.write(name);
+          return name;
+        };
+      </script>
+    </div>
+
+    <div class="name">
+      <nav>
+        <div class="nav-wrapper">
+          <a href="#!" class="brand-logo" id="satomi-custom">
+            <script>
+              if (getUrlParameter() === "901398033277692") {
+                document.write("To Daichi Katayama");
+              } else {
+                document.write("Default for All Friends");
+              }
+            </script>
+          </a>
+          <ul class="right hide-on-med-and-down">
+            <li>Save</li>
+          </ul>
+          <!-- <a class="waves-effect waves-light btn" id="save">Save</a> -->
+        </div>
+      </nav>
+    </div>
+    <div class="permissions">
+      <table>
+        <tr>
+          <td>Data Type</td>
+          <td>Public</td>
+          <td>Depends</td>
+          <td>Private</td>
+        </tr>
+        <script>
+        var permissions;
+
+        if(permissions = JSON.parse('<%- permissions %>')) {
+          permissions.forEach(function (permission) {
+            document.write('<tr><div id="' + permission.data_type + '"><td>' + permission.data_type + ':</td>');
+            document.write('<td><input type="radio" name="' + permission.data_type + '" value="public"></td>');
+            document.write('<td><input type="radio" name="' + permission.data_type + '" value="depends"></td>');
+            document.write('<td><input type="radio" name="' + permission.data_type + '" value="private"></td>');
+            document.write('</tr>');
+
+            if (getUrlParameter === "default") {
+              permission.open_status = "default";
+            }
+
+            switch ( permission.open_status ) {
+              case "public":
+                document.getElementsByName(permission.data_type)[0].checked = true;
+                break;
+
+              case "depends":
+                document.getElementsByName(permission.data_type)[1].checked = true;
+                break;
+
+              case "private":
+                document.getElementsByName(permission.data_type)[2].checked = true;
+                break;
+
+              default :
+                document.getElementsByName(permission.data_type)[0].checked = true;
+                break;
+            }
+
+            console.log(permission);
+          })};
+
+        function postSettings () {
+          var data = {}
+
+          permissions.forEach(function (permission) {
+            data[permission.data_type] = $("#" + permission.data_type + " option:checked").text()
+          })
+          console.log(data)
+
+          $.ajax({
+            type: 'POST',
+            url: "https://" + location.host + "/",
+            data: data
+          }).done(function() {
+              console.log('Settings has successfully changed');
+          })
+        }
+        </script>
+      </table>
+    </div>
+    <footer class="page-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12">
+            <h5 class="white-text">Save</h5>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

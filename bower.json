@@ -1,0 +1,24 @@
+{
+  "name": "nko2015-entry",
+  "description": "Our soon to be awesome entry for NKO2015. Let's make something amazing.",
+  "main": "./app.js",
+  "authors": [
+    "waiwai"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/nko5/wai-wai",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "normalize-css": "normalize.css#~3.0.3",
+    "Materialize": "materialize#~0.97.1",
+    "font-awesome": "~4.4.0"
+  }
+}
