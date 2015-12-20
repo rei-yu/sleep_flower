@@ -140,15 +140,15 @@
         </form>
         <script type="text/javascript">
           $(function () {
-              $('#register').on('click', function () {
-                  console.log("register clicked");
-                  var user_id = $('#user_id').val();
-                  store_id(user_id);
-              });
+            $('#register').on('click', function () {
+              console.log("register clicked");
+              var user_id = $('#user_id').val();
+              store_id(user_id);
 
               if (store.get("user_id")) {
-                  log_in();
+                log_in();
               }
+            });
           });
         </script>
       </div>
@@ -159,9 +159,7 @@
         <script type="text/javascript">
           if (store.get("user_id")) {
             log_in();
-            console.log("has user_id");
           } else {
-            console.log("no user_id");
             document.getElementById("register_form").style.display="blocks";
           }
         </script>
