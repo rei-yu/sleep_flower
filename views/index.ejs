@@ -15,6 +15,10 @@
     <script type="text/javascript" src="/javascript/log_in.js"></script>
     <script type="text/javascript" src="/javascript/logout.js"></script>
     <script type="text/javascript" src="/javascript/get_flower.js"></script>
+    <script type="text/javascript" src="/javascript/get_score.js"></script>
+    <script type="text/javascript" src="/javascript/get_data.js"></script>
+    <script type="text/javascript" src="/javascript/tabletop.js"></script>
+
   </head>
   <body>
     <!-- Sign in with Facebook Page -->
@@ -25,48 +29,32 @@
       //   FB.getLoginStatus();
       // }
 
-      $.ajax({
-        type: 'GET',
-        url: 'https://spreadsheets.google.com/feeds/cells/1v2dMcgwUvncDPJC60-thcqD3Kbe77o0jCJkGVRfuAd0/otznxhp/public/values?alt=json',
-        dataType: 'jsonp',
-        cache: false,
-        success: function(data){ // 通信が成功した時
-          console.log('data:', data);
-          var sheetsEntry = data.feed.entry; // 実データ部分を取得
-          categorized = catedorizeData(sheetsEntry); // データを整形して配列で返す
-          renderForm(categorized); // レンダリング用の関数を呼ぶ
-        },
-        error: function(){ // 通信が失敗した時
-          console.log('error get from google spreadsheet');
-        }
-      });
+      // function catedorizeData(sheetsEntry){
+      //   var categorized = [];
+      //   for(var i = 0; i<sheetsEntry.length; i++){
+      //     var dataCol = sheetsEntry[i].gs$cell.col;
+      //     var dataRow = sheetsEntry[i].gs$cell.row;
 
-      function catedorizeData(sheetsEntry){
-        var categorized = [];
-        for(var i = 0; i<sheetsEntry.length; i++){
-          var dataCol = sheetsEntry[i].gs$cell.col;
-          var dataRow = sheetsEntry[i].gs$cell.row;
+      //     if(dataCol == 1 && dataRow != sheetsEntry[i+1].gs$cell.row){
+      //       categorized[categorized.length] = [];
+      //     }
+      //     categorized[categorized.length-1] = sheetsEntry[i];
+      //   }
+      //   return categorized;
+      // }
 
-          if(dataCol == 1 && dataRow != sheetsEntry[i+1].gs$cell.row){
-            categorized[categorized.length] = [];
-          }
-          categorized[categorized.length-1] = sheetsEntry[i];
-        }
-        return categorized;
-      }
-
-      function renderForm(categorized){
-        var target = $('.formSubmit');
-        categorized.forEach(function(areaCats){
-          target.before('<h2>'+areaCats[0].gs$cell.$t+'</h2>');
-          target.before('<dl>');
-          for(var i = 1; i<areaCats.length; i+=2){
-            target.before('<dt><label><input name="cats" type="checkbox" />'+areaCats[i].gs$cell.$t+'</label></dt>');
-            target.before('<dd>原産地：'+areaCats[i+1].gs$cell.$t+'</dd>');
-          }
-          target.before('</dl>');
-        });
-      }
+      // function renderForm(categorized){
+      //   var target = $('.formSubmit');
+      //   categorized.forEach(function(areaCats){
+      //     target.before('<h2>'+areaCats[0].gs$cell.$t+'</h2>');
+      //     target.before('<dl>');
+      //     for(var i = 1; i<areaCats.length; i+=2){
+      //       target.before('<dt><label><input name="cats" type="checkbox" />'+areaCats[i].gs$cell.$t+'</label></dt>');
+      //       target.before('<dd>原産地：'+areaCats[i+1].gs$cell.$t+'</dd>');
+      //     }
+      //     target.before('</dl>');
+      //   });
+      // }
 
       // window.fbAsyncInit = function() {
       // FB.init({
@@ -154,7 +142,7 @@
         </script>
       </div>
 
-      <div id="header" style="display: none;">
+      <div id="header" style="display: none; text-align:right">
         <span id="login_info">
         </span>
         <script type="text/javascript">
@@ -174,10 +162,32 @@
           });
         </script>
 
-        <div id="flower">
+        <div id="flower" style="text-align:center">
           <script type="text/javascript">
-            var score = 80;
             var id = store.get("user_id");
+
+            // $.ajax({
+            //   type: 'GET',
+            //   url: 'https://spreadsheets.google.com/feeds/cells/1ppY0X-YGRcAtRLn-9m8cM4Et_Hy2kRvMua5teoTcliM/ojc2tyx/public/values?alt=json',
+            //   dataType: 'jsonp',
+            //   cache: false,
+            //   success: function(data){ // 通信が成功した時
+            //     var sheetsEntry = data.feed.entry; // 実データ部分を取得
+            //     console.log(sheetsEntry);
+            //     // for(var i = 0; i<sheetsEntry.length; i++){
+            //     //   var dataCol = sheetsEntry[i].gs$cell.col;
+            //     //   var dataRow = sheetsEntry[i].gs$cell.row;
+
+            //     // categorized = catedorizeData(sheetsEntry); // データを整形して配列で返す
+            //     // renderForm(categorized); // レンダリング用の関数を呼ぶ
+            //   },
+            //   error: function(){ // 通信が失敗した時
+            //     console.log('error get from google spreadsheet');
+            //   }
+            // });
+            init();
+            var score = (get_score(id) || 80);
+            console.log("score:", score);
             get_flower(score);
           </script>
         </div>
