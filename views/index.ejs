@@ -10,14 +10,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script type="text/javascript" src="/javascript/jquery-1.11.3.js"></script>
     <script type="text/javascript" src="/javascript/materialize.min.js"></script>
+    <script type="text/javascript" src="/javascript/store.min.js"></script>
+    <script type="text/javascript" src="/javascript/store_id.js"></script>
   </head>
   <body>
     <!-- Sign in with Facebook Page -->
     <script>
       // This function is called when someone finishes with the Login Button.
-      function checkLoginState() {
-        FB.getLoginStatus();
-      }
+
+      // function checkLoginState() {
+      //   FB.getLoginStatus();
+      // }
 
       $.ajax({
         type: 'GET',
@@ -25,6 +28,7 @@
         dataType: 'jsonp',
         cache: false,
         success: function(data){ // 通信が成功した時
+          console.log('data:', data);
           var sheetsEntry = data.feed.entry; // 実データ部分を取得
           categorized = catedorizeData(sheetsEntry); // データを整形して配列で返す
           renderForm(categorized); // レンダリング用の関数を呼ぶ
@@ -34,7 +38,7 @@
         }
       });
 
-      function catedorizeData(sheetsEntry){ // データを整形して配列で返す
+      function catedorizeData(sheetsEntry){
         var categorized = [];
         for(var i = 0; i<sheetsEntry.length; i++){
           var dataCol = sheetsEntry[i].gs$cell.col;
@@ -48,7 +52,7 @@
         return categorized;
       }
 
-      function renderForm(categorized){ // レンダリング用の関数
+      function renderForm(categorized){
         var target = $('.formSubmit');
         categorized.forEach(function(areaCats){
           target.before('<h2>'+areaCats[0].gs$cell.$t+'</h2>');
@@ -61,73 +65,106 @@
         });
       }
 
-      window.fbAsyncInit = function() {
-      FB.init({
-        appId      : '860450624074844',
-        cookie     : true,  // enable cookies to allow the server to access
-                            // the session
-        xfbml      : true,  // parse social plugins on this page
-        version    : 'v2.5' // use version 2.2
-      });
+      // window.fbAsyncInit = function() {
+      // FB.init({
+      //   appId      : '860450624074844',
+      //   cookie     : true,  // enable cookies to allow the server to access
+      //                       // the session
+      //   xfbml      : true,  // parse social plugins on this page
+      //   version    : 'v2.5' // use version 2.2
+      // });
 
-      FB.getLoginStatus(function(response) {
-        if (response.authResponse) {
-              fbUserId = response.authResponse.userID;
-              token = response.authResponse.accessToken;
-              $('.setting').show();
-              // render_friends();
-              checkCallback();
-          }
-          else {
-              $('#facebook_oauth').show();
-              FB.login(function(response) {
-                  if (response.authResponse) {
-                      fbUserId = response.authResponse.userID;
-                      token = response.authResponse.accessToken;
-                      $('.setting').show();
-                      render_friends();
-                      checkCallback();
-                  }
-                  else {
-                       console.log('User cancelled login or did not fully authorize.');
-                  }
-              }, {scope: 'user_friends'});
-          }
-        },true);
-      };
+      // FB.getLoginStatus(function(response) {
+      //   if (response.authResponse) {
+      //         fbUserId = response.authResponse.userID;
+      //         token = response.authResponse.accessToken;
+      //         $('.setting').show();
+      //         // render_friends();
+      //         checkCallback();
+      //     }
+      //     else {
+      //         $('#facebook_oauth').show();
+      //         FB.login(function(response) {
+      //             if (response.authResponse) {
+      //                 fbUserId = response.authResponse.userID;
+      //                 token = response.authResponse.accessToken;
+      //                 $('.setting').show();
+      //                 render_friends();
+      //                 checkCallback();
+      //             }
+      //             else {
+      //                  console.log('User cancelled login or did not fully authorize.');
+      //             }
+      //         }, {scope: 'user_friends'});
+      //     }
+      //   },true);
+      // };
 
-      // Load the SDK asynchronously
-      (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
+      // // Load the SDK asynchronously
+      // (function(d, s, id) {
+      //   var js, fjs = d.getElementsByTagName(s)[0];
+      //   if (d.getElementById(id)) return;
+      //   js = d.createElement(s); js.id = id;
+      //   js.src = "//connect.facebook.net/en_US/sdk.js";
+      //   fjs.parentNode.insertBefore(js, fjs);
+      // }(document, 'script', 'facebook-jssdk'));
 
-      function checkCallback() {
-        console.log('Welcome!  Fetching your information.... ');
-        FB.api('/me', function(response) {
-          console.log('Successful login for: ' + response.name);
-        });
-      }
+      // function checkCallback() {
+      //   console.log('Welcome!  Fetching your information.... ');
+      //   FB.api('/me', function(response) {
+      //     console.log('Successful login for: ' + response.name);
+      //     store.set('name', name)
+      //   });
+      // }
 
     </script>
 
-    <div class="setting" style="display: none;">
+    <div class="setting">
       <nav>
         <div class="nav-wrapper">
-          <a href="#!" class="brand-logo" id="satomi-custom">Set Sharing Scope</a>
+          <a href="#!" class="brand-logo" id="satomi-custom">Sleep Flower</a>
         </div>
       </nav>
-
+<!--
       <div class="default">
         <a href="/friends/?id=default">Default for All Friends</a>
+      </div> -->
+
+      <div id="register_form">
+        idを入力して下さい。
+        <form id="form_user_id" action="/path/to/post" method="post">
+          <input id="user_id" type="text" name="user_id" />
+          <input id="register" type='button' value='Register User ID'>
+        </form>
+        <script type="text/javascript">
+          $(function () {
+              $('#register').on('click', function () {
+                  console.log("button clicked");
+                  var user_id = $('#user_id').val();
+                  store_id(user_id);
+              });
+
+              if (store.get("user_id")) {
+                document.getElementById("register_form").style.display="none";
+                document.getElementById("login_info").style.display="block";
+              }
+          });
+        </script>
       </div>
 
-      <div class="formSubmit">
-        <a href="/friends/?id=default">JSON Result</a>
+      <div id="login_info" style="display: none;">
+        <script type="text/javascript">
+          if (store.get("user_id")) {
+            login_info = document.getElementById("login_info");
+            login_info.textContent = "Your id: " + store.get("user_id");
+            document.getElementById("login_info").style.display="block";
+          }
+        </script>
       </div>
+
+<!--       <div class="formSubmit">
+        <a href="/friends/?id=default">JSON Result</a>
+      </div> -->
     </div>
   </body>
 </html>
