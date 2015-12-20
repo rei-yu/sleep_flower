@@ -4,5 +4,4 @@ function log_in () {
   login_info = document.getElementById("login_info");
   login_info.textContent = "Your id: " + store.get("user_id");
   login_info.style.display="block";
-
 }

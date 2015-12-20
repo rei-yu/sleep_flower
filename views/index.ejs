@@ -14,6 +14,7 @@
     <script type="text/javascript" src="/javascript/store_id.js"></script>
     <script type="text/javascript" src="/javascript/log_in.js"></script>
     <script type="text/javascript" src="/javascript/logout.js"></script>
+    <script type="text/javascript" src="/javascript/get_flower.js"></script>
   </head>
   <body>
     <!-- Sign in with Facebook Page -->
@@ -172,6 +173,14 @@
               });
           });
         </script>
+
+        <div id="flower">
+          <script type="text/javascript">
+            var score = 80;
+            var id = store.get("user_id");
+            get_flower(score);
+          </script>
+        </div>
       </div>
 
 
