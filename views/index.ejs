@@ -12,6 +12,8 @@
     <script type="text/javascript" src="/javascript/materialize.min.js"></script>
     <script type="text/javascript" src="/javascript/store.min.js"></script>
     <script type="text/javascript" src="/javascript/store_id.js"></script>
+    <script type="text/javascript" src="/javascript/log_in.js"></script>
+    <script type="text/javascript" src="/javascript/logout.js"></script>
   </head>
   <body>
     <!-- Sign in with Facebook Page -->
@@ -139,28 +141,41 @@
         <script type="text/javascript">
           $(function () {
               $('#register').on('click', function () {
-                  console.log("button clicked");
+                  console.log("register clicked");
                   var user_id = $('#user_id').val();
                   store_id(user_id);
               });
 
               if (store.get("user_id")) {
-                document.getElementById("register_form").style.display="none";
-                document.getElementById("login_info").style.display="block";
+                  log_in();
               }
           });
         </script>
       </div>
 
-      <div id="login_info" style="display: none;">
+      <div id="header" style="display: none;">
+        <span id="login_info">
+        </span>
         <script type="text/javascript">
           if (store.get("user_id")) {
-            login_info = document.getElementById("login_info");
-            login_info.textContent = "Your id: " + store.get("user_id");
-            document.getElementById("login_info").style.display="block";
+            log_in();
+            console.log("has user_id");
+          } else {
+            console.log("no user_id");
+            document.getElementById("register_form").style.display="blocks";
           }
         </script>
+        <input id="logout" type='button' value='Log out'>
+        <script type="text/javascript">
+          $(function () {
+              $('#logout').on('click', function () {
+                  console.log("logout clicked");
+                  log_out();
+              });
+          });
+        </script>
       </div>
+
 
 <!--       <div class="formSubmit">
         <a href="/friends/?id=default">JSON Result</a>
