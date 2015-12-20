@@ -3,14 +3,14 @@ function get_flower (score) {
 
   if (store.get('has_leaf')) {
     // pic with leaf
-    if (score > 80) {
+    if (score >= 80) {
       store.set('lose_leaf_count', 0);
       pic_url = "/img/flower-happy-with-leaf.png"
-    } else if (score >40) {
+    } else if (score >= 40) {
       store.set('lose_leaf_count', 0);
       pic_url = "/img/flower-nogood-with-leaf.png"
     } else {
-      if (store.get('lose_leaf_count')==1) {
+      if (store.get('lose_leaf_count') == 1) {
         store.set('has_leaf', false);
         window.confirm('葉っぱが枯れちゃったよ')
         pic_url = "/img/flower-bad.png"
@@ -22,12 +22,12 @@ function get_flower (score) {
     }
   } else {
     //pic without leaf
-    if (score > 80) {
-      if (store.get('get_leaf_count')==2) {
+    if (score >= 80) {
+      if (store.get('get_leaf_count') == 2) {
         store.set('has_leaf', true);
         window.confirm('葉っぱがさいたよ！おめでとう！！')
         pic_url = "/img/flower-happy-with-leaf.png"
-      } else if (store.get('get_leaf_count')==1){
+      } else if (store.get('get_leaf_count') == 1){
         store.set('get_leaf_count', 2);
         window.confirm('もう少しで葉っぱが生えてきそう…！')
         pic_url = "/img/flower-happy.png"
@@ -35,7 +35,7 @@ function get_flower (score) {
         store.set('get_leaf_count', 1);
         pic_url = "/img/flower-happy.png"
       }
-    } else if (score >40) {
+    } else if (score >= 40) {
       store.set('get_leaf_count', 0);
       pic_url = "/img/flower-nogood.png"
     } else {
