@@ -130,6 +130,7 @@
         <script type="text/javascript">
           $(function () {
             $('#register').on('click', function () {
+              event.preventDefault();
               console.log("register clicked");
               var user_id = $('#user_id').val();
               store_id(user_id);
@@ -166,8 +167,7 @@
           <script type="text/javascript">
             var id = store.get("user_id");
             init();
-            var score = (get_score(id) || 80);
-            console.log("score:", score);
+            var score = get_score(id);
             get_flower(score);
           </script>
         </div>

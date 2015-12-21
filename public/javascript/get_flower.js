@@ -35,10 +35,11 @@ function get_flower (score) {
           pic_url = "/img/flower-happy-with-leaf.png"
         } else if (store.get('get_leaf_count') == 1){
           store.set('get_leaf_count', 2);
-          window.confirm('もう少しで葉っぱが生えてきそう…！')
+          window.confirm('あと1日！')
           pic_url = "/img/flower-happy.png"
         } else {
           store.set('get_leaf_count', 1);
+          window.confirm('2日キープでいいことが起きそう…！')
           pic_url = "/img/flower-happy.png"
         }
       } else if (score >= 40) {
