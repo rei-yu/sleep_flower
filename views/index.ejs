@@ -165,26 +165,6 @@
         <div id="flower" style="text-align:center">
           <script type="text/javascript">
             var id = store.get("user_id");
-
-            // $.ajax({
-            //   type: 'GET',
-            //   url: 'https://spreadsheets.google.com/feeds/cells/1ppY0X-YGRcAtRLn-9m8cM4Et_Hy2kRvMua5teoTcliM/ojc2tyx/public/values?alt=json',
-            //   dataType: 'jsonp',
-            //   cache: false,
-            //   success: function(data){ // 通信が成功した時
-            //     var sheetsEntry = data.feed.entry; // 実データ部分を取得
-            //     console.log(sheetsEntry);
-            //     // for(var i = 0; i<sheetsEntry.length; i++){
-            //     //   var dataCol = sheetsEntry[i].gs$cell.col;
-            //     //   var dataRow = sheetsEntry[i].gs$cell.row;
-
-            //     // categorized = catedorizeData(sheetsEntry); // データを整形して配列で返す
-            //     // renderForm(categorized); // レンダリング用の関数を呼ぶ
-            //   },
-            //   error: function(){ // 通信が失敗した時
-            //     console.log('error get from google spreadsheet');
-            //   }
-            // });
             init();
             var score = (get_score(id) || 80);
             console.log("score:", score);
@@ -193,10 +173,6 @@
         </div>
       </div>
 
-
-<!--       <div class="formSubmit">
-        <a href="/friends/?id=default">JSON Result</a>
-      </div> -->
     </div>
   </body>
 </html>
